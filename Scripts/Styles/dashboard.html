@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <style>
+        div{
+            display: flex;
+            justify-content: space-around;
+        }
+        ul{
+            display: flex;
+            
+        }
+        li{
+            list-style-type: none;
+            padding: 10px;
+        }
+        table{
+            width: 90%;
+            border-collapse: collapse;
+            border: 2px white;
+            justify-content: space-between;
+            
+        }
+        
+        thead{
+            background-color: yellow;
+            
+        }
+        .button-buy {
+    background-color: green;
+    color: white;
+}
+
+.button-remove {
+    background-color: red;
+    color: white;
+}
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <h2>Masai School</h2>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="buy.html">My Books</a></li>
+                <li><a href="bookmark.html">Bookmark</a></li>
+            </ul>
+        </nav>
+    </div>
+    <h1>Book List</h1>
+    <table id="bookTable" >
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Added Date</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Buy</th>
+                <th>Bookmark</th>
+            </tr>
+        </thead>
+        <tbody id="bookTableBody"></tbody>
+    </table>
+
+    <script >
+        
+document.addEventListener('DOMContentLoaded', () => {
+    displayBookList(); // Display book data in the table
+});
+
+function displayBookList() {
+    
+    const bookList = JSON.parse(localStorage.getItem('book-list')) || [];
+    const tableBody = document.getElementById('bookTableBody');
+
+    tableBody.innerHTML = ''; // Clear existing table rows
+
+    bookList.forEach(book => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${book.bookName}</td>
+            <td>${book.authorName}</td>
+            <td>${book.bookDescription}</td>
+            <td>${book.addedDate}</td>
+            <td>${book.bookCategory}</td>
+            <td>${book.price || '-'}</td>
+            <td><button onclick="buyBook(${book.id})">Buy</button></td>
+           
+            <td><button onclick="bookmarkBook(${book.id})">Bookmark</button></td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function buyBook(bookId) {
+    const bookList = JSON.parse(localStorage.getItem('book-list')) || [];
+    const buyList = JSON.parse(localStorage.getItem('buy-list')) || [];
+    
+    const bookToBuy = bookList.find(book => book.id === bookId);
+    if (bookToBuy) {
+        buyList.push(bookToBuy);
+        localStorage.setItem('buy-list', JSON.stringify(buyList));
+
+        
+        const updatedBookList = bookList.filter(book => book.id !== bookId);
+        localStorage.setItem('book-list', JSON.stringify(updatedBookList));
+
+        displayBookList(); // Refresh the displayed book list
+    }
+}
+
+function bookmarkBook(bookId) {
+    const bookList = JSON.parse(localStorage.getItem('book-list')) || [];
+    const bookmarkList = JSON.parse(localStorage.getItem('bookmark-list')) || [];
+    
+    const bookToBookmark = bookList.find(book => book.id === bookId);
+    if (bookToBookmark) {
+        bookmarkList.push(bookToBookmark);
+        localStorage.setItem('bookmark-list', JSON.stringify(bookmarkList));
+
+        
+        const updatedBookList = bookList.filter(book => book.id !== bookId);
+        localStorage.setItem('book-list', JSON.stringify(updatedBookList));
+
+        displayBookList(); 
+    }
+}
+
+    </script>
+</body>
+</html>

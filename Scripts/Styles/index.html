@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library manangement</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        #navbar{
+
+            display: flex;
+            justify-content: space-around;
+
+        }
+        ul{
+            display: flex;
+            
+        }
+        li{
+            list-style-type: none;
+            padding: 10px;
+            
+        }
+        #form{
+            display: inline;
+            text-align: center;
+            
+            
+           
+           
+        }
+        input{
+            padding: 10px;
+            width: 70%;
+            margin-top: 20px;
+        }
+        #bookDescription{
+            width: 71.5%;
+            margin-top: 20px;
+        }
+        #bookCategory{
+            margin-top: 20px;
+            width: 71.5%;
+            height: 40px;
+        }
+        #bookPrice{
+            margin-top: 20px;
+            width: 70%;
+        }
+        button{
+            width: 71.5%;
+            height: 40px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="navbar">
+    <h2>Masai School</h2>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="buy.html">My Books</a></li>
+            <li><a href="bookmark.html">Bookmark</a></li>
+        </ul>
+    </nav>
+</div>
+<div id="form">
+    <h1>Library manangement  system</h1>
+    <form id="bookForm">
+        
+        <input type="text" id="bookName" placeholder="Book Name" name="bookName" required><br>
+
+        
+        <input type="text" id="authorName" placeholder="Author Name" name="authorName" required><br>
+
+        
+        <textarea id="bookDescription" placeholder="Book Description" name="bookDescription" required></textarea><br><br>
+
+        <label for="addedDate">Adding Date:-</label><br>
+        <input type="date" id="addedDate" name="addedDate" required><br>
+
+       
+        <select id="bookCategory"  name="bookCategory" required>
+            <option value="" disabled selected>Select Category</option>
+            <option value="Fiction">Fiction</option>
+            <option value="Self Help">Self Help</option>
+            <option value="Finance">Finance</option>
+        </select><br>
+
+        <input type="text" id="bookPrice" placeholder="Book Price" name="bookPrice" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+</div>
+</body>
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const bookForm = document.getElementById('bookForm');
+    bookForm.addEventListener('submit', handleFormSubmit);
+});
+
+function handleFormSubmit(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(event.target);
+    const bookData = {
+        bookName: formData.get('bookName'),
+        authorName: formData.get('authorName'),
+        bookDescription: formData.get('bookDescription'),
+        addedDate: formData.get('addedDate'),
+        bookCategory: formData.get('bookCategory'),
+    };
+
+    saveBookData(bookData);
+    alert('Book added successfully!');
+    event.target.reset(); // Clear the form
+}
+
+function saveBookData(bookData) {
+    const bookList = JSON.parse(localStorage.getItem('book-list')) || [];
+    bookList.push(bookData);
+    localStorage.setItem('book-list', JSON.stringify(bookList));
+}
+
+</script>
+</html>

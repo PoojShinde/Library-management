@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Books</title>
+    <style>
+    body{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    #navbar{
+
+        display: flex;
+        justify-content: space-around;
+
+    }
+    ul{
+        display: flex;
+        
+    }
+    li{
+        list-style-type: none;
+        padding: 10px;
+        
+    }
+    table{
+            width: 90%;
+            border-collapse: collapse;
+            border: 2px white;
+            justify-content: space-between;
+            
+        }
+        
+        thead{
+            background-color: yellow;
+            
+        }
+</style>
+</head>
+<body>
+    <div id="navbar">
+        <h2>Masai School</h2>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="buy.html">My Books</a></li>
+                <li><a href="bookmark.html">Bookmark</a></li>
+            </ul>
+        </nav>
+    </div>
+    <h1>My Books</h1>
+    <table id="myBooksTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Added Date</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="myBooksTableBody"></tbody>
+    </table>
+
+    <script>
+        // mybooks.js
+document.addEventListener('DOMContentLoaded', () => {
+    displayMyBooksList(); // Display bought book data in the table
+});
+
+function displayMyBooksList() {
+    const buyList = JSON.parse(localStorage.getItem('buy-list')) || [];
+    const tableBody = document.getElementById('myBooksTableBody');
+
+    tableBody.innerHTML = ''; // Clear existing table rows
+
+    buyList.forEach(book => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${book.bookName}</td>
+            <td>${book.authorName}</td>
+            <td>${book.bookDescription}</td>
+            <td>${book.addedDate}</td>
+            <td>${book.bookCategory}</td>
+            <td>${book.price || '-'}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+    </script>
+</body>
+</html>
